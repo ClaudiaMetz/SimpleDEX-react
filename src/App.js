@@ -12,7 +12,6 @@ function App() {
   const [swapAmountB, setSwapAmountB] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");
   const [tokenPrice, setTokenPrice] = useState("");
-
   useEffect(() => {
     if (window.ethereum) {
       const web3Instance = new Web3(window.ethereum);
@@ -236,7 +235,11 @@ function App() {
             },
             {
               inputs: [
-                { internalType: "uint256", name: "amountAIn", type: "uint256" },
+                {
+                  internalType: "uint256",
+                  name: "amountAIn",
+                  type: "uint256",
+                },
               ],
               name: "swapAforB",
               outputs: [],
@@ -245,7 +248,11 @@ function App() {
             },
             {
               inputs: [
-                { internalType: "uint256", name: "amountBIn", type: "uint256" },
+                {
+                  internalType: "uint256",
+                  name: "amountBIn",
+                  type: "uint256",
+                },
               ],
               name: "swapBforA",
               outputs: [],
@@ -256,7 +263,11 @@ function App() {
               inputs: [],
               name: "tokenA",
               outputs: [
-                { internalType: "contract IERC20", name: "", type: "address" },
+                {
+                  internalType: "contract IERC20",
+                  name: "",
+                  type: "address",
+                },
               ],
               stateMutability: "view",
               type: "function",
@@ -265,14 +276,22 @@ function App() {
               inputs: [],
               name: "tokenB",
               outputs: [
-                { internalType: "contract IERC20", name: "", type: "address" },
+                {
+                  internalType: "contract IERC20",
+                  name: "",
+                  type: "address",
+                },
               ],
               stateMutability: "view",
               type: "function",
             },
             {
               inputs: [
-                { internalType: "address", name: "newOwner", type: "address" },
+                {
+                  internalType: "address",
+                  name: "newOwner",
+                  type: "address",
+                },
               ],
               name: "transferOwnership",
               outputs: [],
@@ -315,7 +334,13 @@ function App() {
       await simpleDEX.methods
         .swapAforB(swapAmountA)
         .send({ from: accounts[0] });
-      const amountB = await simpleDEX.methods.getAmountBOut(swapAmountA).call();
+      const amountB = await simpleDEX.methods
+        .getAmountOut(
+          swapAmountA,
+          simpleDEX.methods.reserveA().call(),
+          simpleDEX.methods.reserveB().call()
+        )
+        .call();
       setSwapAmountB(amountB);
     }
   };
@@ -325,7 +350,13 @@ function App() {
       await simpleDEX.methods
         .swapBforA(swapAmountB)
         .send({ from: accounts[0] });
-      const amountA = await simpleDEX.methods.getAmountAOut(swapAmountB).call();
+      const amountA = await simpleDEX.methods
+        .getAmountOut(
+          swapAmountB,
+          simpleDEX.methods.reserveB().call(),
+          simpleDEX.methods.reserveA().call()
+        )
+        .call();
       setSwapAmountA(amountA);
     }
   };
@@ -336,12 +367,27 @@ function App() {
       setTokenPrice(price);
     }
   };
-
   return (
     <div className="App">
       <h1>SimpleDEX WebPage</h1>
       <div id="add-liquidity">
         <h2>Add Liquidity</h2>
+        <input
+          type="text"
+          value={amountA}
+          onChange={(e) => setAmountA(e.target.value)}
+          placeholder="Amount A"
+        />
+        <input
+          type="text"
+          value={amountB}
+          onChange={(e) => setAmountB(e.target.value)}
+          placeholder="Amount B"
+        />
+        <button onClick={addLiquidity}>Add Liquidity</button>
+      </div>
+      <div id="remove-liquidity">
+        <h2>Remove Liquidity</h2>
         <input
           type="text"
           value={amountA}
@@ -408,5 +454,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
