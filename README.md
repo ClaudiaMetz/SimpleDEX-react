@@ -1,4 +1,4 @@
-# First Time Creating a React App
+# First Time Creating an App with React 🙀
 
 This is my first try to build an app with react.
 
