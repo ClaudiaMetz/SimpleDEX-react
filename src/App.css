@@ -13,6 +13,11 @@ h2 {
   color: #107db4;
 }
 
+p {
+  color: #125093;
+  font-size: large;
+}
+
 div {
   margin-bottom: 20px;
 }
@@ -34,5 +39,5 @@ button {
 }
 
 button:hover {
-  background-color: #199385;
+  background-color: #282297;
 }
