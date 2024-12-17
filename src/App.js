@@ -12,6 +12,7 @@ function App() {
   const [swapAmountB, setSwapAmountB] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");
   const [tokenPrice, setTokenPrice] = useState("");
+
   useEffect(() => {
     if (window.ethereum) {
       const web3Instance = new Web3(window.ethereum);
@@ -329,19 +330,25 @@ function App() {
     }
   };
 
+  const calculateAmountOut = (amountIn, reserveIn, reserveOut) => {
+    const amountInBigInt = BigInt(amountIn);
+    const reserveInBigInt = BigInt(reserveIn);
+    const reserveOutBigInt = BigInt(reserveOut);
+
+    const newReserveIn = reserveInBigInt + amountInBigInt;
+    const newReserveOut = (reserveOutBigInt * reserveInBigInt) / newReserveIn;
+    return reserveOutBigInt - newReserveOut;
+  };
+
   const swapAforB = async () => {
     if (simpleDEX && accounts.length > 0) {
       await simpleDEX.methods
         .swapAforB(swapAmountA)
         .send({ from: accounts[0] });
-      const amountB = await simpleDEX.methods
-        .getAmountOut(
-          swapAmountA,
-          simpleDEX.methods.reserveA().call(),
-          simpleDEX.methods.reserveB().call()
-        )
-        .call();
-      setSwapAmountB(amountB);
+      const reserveA = await simpleDEX.methods.reserveA().call();
+      const reserveB = await simpleDEX.methods.reserveB().call();
+      const amountB = calculateAmountOut(swapAmountA, reserveA, reserveB);
+      setSwapAmountB(amountB.toString()); // Convertir BigInt a string para mostrarlo
     }
   };
 
@@ -350,21 +357,17 @@ function App() {
       await simpleDEX.methods
         .swapBforA(swapAmountB)
         .send({ from: accounts[0] });
-      const amountA = await simpleDEX.methods
-        .getAmountOut(
-          swapAmountB,
-          simpleDEX.methods.reserveB().call(),
-          simpleDEX.methods.reserveA().call()
-        )
-        .call();
-      setSwapAmountA(amountA);
+      const reserveA = await simpleDEX.methods.reserveA().call();
+      const reserveB = await simpleDEX.methods.reserveB().call();
+      const amountA = calculateAmountOut(swapAmountB, reserveB, reserveA);
+      setSwapAmountA(amountA.toString()); // Convertir BigInt a string para mostrarlo
     }
   };
 
   const getPrice = async () => {
     if (simpleDEX) {
       const price = await simpleDEX.methods.getPrice(tokenAddress).call();
-      setTokenPrice(price);
+      setTokenPrice(price.toString());
     }
   };
   return (
@@ -372,22 +375,6 @@ function App() {
       <h1>SimpleDEX WebPage</h1>
       <div id="add-liquidity">
         <h2>Add Liquidity</h2>
-        <input
-          type="text"
-          value={amountA}
-          onChange={(e) => setAmountA(e.target.value)}
-          placeholder="Amount A"
-        />
-        <input
-          type="text"
-          value={amountB}
-          onChange={(e) => setAmountB(e.target.value)}
-          placeholder="Amount B"
-        />
-        <button onClick={addLiquidity}>Add Liquidity</button>
-      </div>
-      <div id="remove-liquidity">
-        <h2>Remove Liquidity</h2>
         <input
           type="text"
           value={amountA}
@@ -450,6 +437,8 @@ function App() {
         />
         <button onClick={getPrice}>Get Price</button>
         <p>Price: {tokenPrice}</p>
+        <p>Token A: 0xc814C520b8F65837500825786D5D0f8E9C706Bfc</p>
+        <p>Token B: 0x928E7Cc1CCf65f323eBA4A0f1Be7486383831a1c</p>
       </div>
     </div>
   );
