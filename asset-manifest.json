@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/SimpleDEX-react/static/css/main.f3bca481.css",
-    "main.js": "/SimpleDEX-react/static/js/main.f75b413e.js",
+    "main.css": "/SimpleDEX-react/static/css/main.385a0806.css",
+    "main.js": "/SimpleDEX-react/static/js/main.effe3c7e.js",
     "index.html": "/SimpleDEX-react/index.html",
-    "main.f3bca481.css.map": "/SimpleDEX-react/static/css/main.f3bca481.css.map",
-    "main.f75b413e.js.map": "/SimpleDEX-react/static/js/main.f75b413e.js.map"
+    "main.385a0806.css.map": "/SimpleDEX-react/static/css/main.385a0806.css.map",
+    "main.effe3c7e.js.map": "/SimpleDEX-react/static/js/main.effe3c7e.js.map"
   },
   "entrypoints": [
-    "static/css/main.f3bca481.css",
-    "static/js/main.f75b413e.js"
+    "static/css/main.385a0806.css",
+    "static/js/main.effe3c7e.js"
   ]
 }
