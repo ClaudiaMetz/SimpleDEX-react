@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/SimpleDEX-react/static/css/main.f3bca481.css",
+    "main.js": "/SimpleDEX-react/static/js/main.f75b413e.js",
+    "index.html": "/SimpleDEX-react/index.html",
+    "main.f3bca481.css.map": "/SimpleDEX-react/static/css/main.f3bca481.css.map",
+    "main.f75b413e.js.map": "/SimpleDEX-react/static/js/main.f75b413e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f3bca481.css",
+    "static/js/main.f75b413e.js"
+  ]
+}
