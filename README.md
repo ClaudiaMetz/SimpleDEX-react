@@ -18,3 +18,6 @@ The app allows 5 actions:
 - Get Token Price
 
 last 3 of them, shows results.
+
+## A side-by-side comparison showing how the interface evolved from the initial concept to the current implementation.
+
